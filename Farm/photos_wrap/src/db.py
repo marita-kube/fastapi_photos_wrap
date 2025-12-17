@@ -18,17 +18,18 @@ class Base(DeclarativeBase):
 class Post(Base):
 	__tablename__ = "posts"
 
-	id = Column(String, primary_key=True, default=uuid.uuid4)
+	id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 	caption = Column(Text)
 	url = Column(String, nullable=False)
 	file_type = Column(String, nullable=False)
 	file_name = Column(String, nullable=False)
 	created_at = Column(DateTime, default=datetime.utcnow)
 
-
+"""Initialize database engine"""
 engine = create_async_engine(DATABASE_URL)
 async_session_maker = async_sessionmaker(engine, expire_on_commit = False)
 
+"""define database and tables creation"""
 async def create_database_tables():
 	async with engine.begin() as conn:
 		await conn.run_sync(Base.metadata.create_all)
