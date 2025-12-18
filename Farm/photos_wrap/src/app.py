@@ -34,12 +34,6 @@ async def upload_file(
 		with tempfile.NamedTemporaryFile(delete=False, dir=tempfile.gettempdir(), suffix=os.path.splitext(file.filename)[1]) as temporary_file:
 			staging_file_path = temporary_file.name
 			shutil.copyfileobj(file.file, temporary_file)
-
-		print("imagekit is:", imagekit)
-		print("type:", type(imagekit))
-		print("dir:", dir(imagekit))
-		print("imagekit is:", imagekit)
-
 		upload_output = imagekit.upload(
 			file=open(staging_file_path, "rb"),
 			file_name=file.filename,
