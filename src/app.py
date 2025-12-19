@@ -10,7 +10,8 @@ import shutil
 import os
 import uuid
 import tempfile
-
+from src.users import (backend_auth, fastapi_users, current_user)
+from src.schemas import UserRead, UserCreate, UserUpdate
 
 @asynccontextmanager
 async def lifespan(app:FastAPI):
@@ -19,6 +20,16 @@ async def lifespan(app:FastAPI):
 
 """Automatically run lifespan function to create the database models"""
 app = FastAPI(lifespan=lifespan)
+
+app.include_router(fastapi_users.get_auth_router(backend_auth), prefix='/auth/jwt', tags=['auth'])
+app.include_router(fastapi_users.get_register_router(UserRead, UserCreate), prefix='/auth', tags=['auth'])
+app.include_router(fastapi_users.get_reset_password_router(), prefix='/auth', tags=['auth'])
+app.include_router(fastapi_users.get_verify_router(UserRead), prefix='/auth', tags=['auth'])
+app.include_router(fastapi_users.get_users_router(UserRead, UserCreate), prefix='/auth', tags=['auth'])
+
+
+
+
 
 @app.post("/upload")
 async def upload_file(
