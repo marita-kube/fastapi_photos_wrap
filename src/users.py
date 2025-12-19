@@ -6,7 +6,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from src.db import User, get_user_data
 import uuid
 
-SECRET = ""
+SECRET = "@qer33456tfd!$@"
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 	reset_password_token_secret = SECRET
